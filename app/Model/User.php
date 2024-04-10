@@ -2,45 +2,29 @@
 
 namespace Model;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Src\Auth\IdentityInterface;
 
 class User extends Model implements IdentityInterface
 {
-    use HasFactory;
+    // Указываем название первичного ключа
+    protected $primaryKey = 'UserID';
 
-    public $timestamps = false;
-    protected $fillable = [
-        'name',
-        'login',
-        'password'
-    ];
-
-    protected static function booted()
-    {
-        static::created(function ($user) {
-            $user->password = md5($user->password);
-            $user->save();
-        });
-    }
-
-    //Выборка пользователя по первичному ключу
+    // Реализация методов интерфейса
     public function findIdentity(int $id)
     {
-        return self::where('id', $id)->first();
+        return self::find($id);
     }
 
-    //Возврат первичного ключа
     public function getId(): int
     {
-        return $this->id;
+        return $this->UserID;
     }
 
-    //Возврат аутентифицированного пользователя
     public function attemptIdentity(array $credentials)
     {
-        return self::where(['login' => $credentials['login'],
-            'password' => md5($credentials['password'])])->first();
+        return self::where('Login', $credentials['login'])
+            ->where('Password', md5($credentials['password']))
+            ->first();
     }
 }

@@ -86,20 +86,24 @@ if (app()->auth::check()) {
 </div>
 
 <div class="container">
-    <?php
-    // Проверяем, является ли пользователь администратором
-    if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Администратор')) {
-        echo '<div class="add-button-container"><button class="add-button">Добавить сотрудника отдела кадров</button></div>';
-    }
-    ?>
-    <?php
-    if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')) {
-        echo '<div class="add-button-container"><button class="add-button">Добавить нового сотрудника </button></div>';
-        echo '<div class="add-button-container"><button class="add-button">Добавить новое подразделение </button></div>';
-        echo '<input type="text" placeholder="Поиск сотрудников" >';
-        echo '<div class="add-button-container"><button class="add-button">Средний возраст сотрудников подразделения </button></div>';
-    }
-    ?>
+    <?php if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Администратор')): ?>
+        <div class="add-button-container">
+            <a href="<?= app()->route->getUrl('/addEmployees') ?>" class="add-button">Добавить сотрудника отдела кадров</a>
+        </div>
+    <?php endif; ?>
+
+    <?php if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')): ?>
+        <div class="add-button-container">
+            <a href="<?= app()->route->getUrl('/add_worker') ?>" class="add-button">Добавить нового сотрудника</a>
+        </div>
+        <div class="add-button-container">
+            <a href="<?= app()->route->getUrl('/add_divisions') ?>" class="add-button">Добавить новое подразделение</a>
+        </div>
+        <div class="add-button-container"><button class="add-button">Средний возраст сотрудников подразделения </button></div>
+    <br>
+        <input type="text" placeholder="Поиск сотрудников" >
+    <?php endif; ?>
+
     <h2>Отдел кадров: Список сотрудников</h2>
     <table>
         <tr>
@@ -109,12 +113,13 @@ if (app()->auth::check()) {
             <th>Отчество</th>
             <th>Пол</th>
             <th>Дата рождения</th>
-            <th>Адрес прописски</th>
+            <th>Адрес прописки</th>
             <th>Должность</th>
             <th>Подразделение</th>
         </tr>
     </table>
 </div>
+
 
 </body>
 </html>

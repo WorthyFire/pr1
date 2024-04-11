@@ -15,7 +15,16 @@ class Site
         $view = new View();
         return $view->render('site.hello', ['message' => 'index working']);
     }
-
+    public function add_worker(): string
+    {
+        $view = new View();
+        return $view->render('employees.add_worker');
+    }
+    public function add_divisions(): string
+    {
+        $view = new View();
+        return $view->render('employees.add_divisions');
+    }
     public function hello(): string
     {
        // var_dump(app()->auth::user()->roles); die();

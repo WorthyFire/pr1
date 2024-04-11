@@ -2,14 +2,23 @@
 
 namespace Model;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Src\Auth\IdentityInterface;
 
 class User extends Model implements IdentityInterface
 {
+    use HasFactory;
+
+    public $timestamps = false;
     // Указываем название первичного ключа
     protected $primaryKey = 'UserID';
+
+    protected $fillable = [
+        'login',
+        'password',
+    ];
 
     // Реализация методов интерфейса
 

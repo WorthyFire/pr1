@@ -9,19 +9,6 @@
 </head>
 <body>
 <header>
-    <nav>
-
-        <?php
-        if (!app()->auth::check()):
-            ?>
-            <a href="<?= app()->route->getUrl('/login') ?>">Вход</a>
-        <?php
-        else:
-            ?>
-        <?php
-        endif;
-        ?>
-    </nav>
 </header>
 <main>
     <?= $content ?? '' ?>

@@ -50,6 +50,10 @@
         tr:hover {
             background-color: #f5f5f5;
         }
+        .add-button-container {
+            display: inline-block;
+            margin-right: 10px;
+        }
         .add-button {
             padding: 10px 20px;
             background-color: #5cb85c;
@@ -58,19 +62,44 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .add-button:hover{
+            background-color: blue;
+        }
     </style>
 </head>
 <body>
+<?php
+// Проверяем, авторизован ли пользователь
+if (app()->auth::check()) {
+    // Получаем текущего пользователя
+    $user = app()->auth::user();
 
+    // Получаем роль пользователя
+    $role = $user->roles->isNotEmpty() ? $user->roles[0]->Name : 'Неизвестно';
+} else {
+    $role = 'Неизвестно';
+}
+?>
 <div class="header">
-    <div class="roles">Роль: Администратор</div>
-    <a href="<?= app()->route->getUrl('/logout') ?>">Выход (<?= app()->auth::user()->name ?>)</a>
+    <div class="roles">Роль: <?php echo $role; ?></div>
+    <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
 </div>
 
 <div class="container">
-    <div>
-        <button class="add-button">Добавить сотрудника отдела кадров</button>
-    </div>
+    <?php
+    // Проверяем, является ли пользователь администратором
+    if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Администратор')) {
+        echo '<div class="add-button-container"><button class="add-button">Добавить сотрудника отдела кадров</button></div>';
+    }
+    ?>
+    <?php
+    if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')) {
+        echo '<div class="add-button-container"><button class="add-button">Добавить нового сотрудника </button></div>';
+        echo '<div class="add-button-container"><button class="add-button">Добавить новое подразделение </button></div>';
+        echo '<input type="text" placeholder="Поиск сотрудников" >';
+        echo '<div class="add-button-container"><button class="add-button">Средний возраст сотрудников подразделения </button></div>';
+    }
+    ?>
     <h2>Отдел кадров: Список сотрудников</h2>
     <table>
         <tr>
@@ -83,10 +112,7 @@
             <th>Адрес прописски</th>
             <th>Должность</th>
             <th>Подразделение</th>
-
-            <!-- Добавьте остальные столбцы согласно вашим требованиям -->
         </tr>
-        <!-- Здесь будут строки с данными сотрудников, которые можно генерировать динамически с помощью PHP -->
     </table>
 </div>
 

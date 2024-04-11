@@ -3,6 +3,7 @@
 namespace Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Src\Auth\IdentityInterface;
 
 class User extends Model implements IdentityInterface
@@ -11,6 +12,7 @@ class User extends Model implements IdentityInterface
     protected $primaryKey = 'UserID';
 
     // Реализация методов интерфейса
+
     public function findIdentity(int $id)
     {
         return self::find($id);
@@ -26,5 +28,9 @@ class User extends Model implements IdentityInterface
         return self::where('Login', $credentials['login'])
             ->where('Password', md5($credentials['password']))
             ->first();
+    }
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'userrole','UserID', 'RoleID');
     }
 }

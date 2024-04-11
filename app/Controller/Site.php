@@ -18,6 +18,7 @@ class Site
 
     public function hello(): string
     {
+       // var_dump(app()->auth::user()->roles); die();
         return new View('site.hello', ['message' => 'hello working']);
     }
     public function login(Request $request): string
@@ -39,6 +40,8 @@ class Site
         Auth::logout();
         app()->route->redirect('/login');
     }
+
+
 
 
 }

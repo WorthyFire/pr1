@@ -25,6 +25,11 @@ class Site
         $view = new View();
         return $view->render('employees.add_divisions');
     }
+    public function avg_age(): string
+    {
+        $view = new View();
+        return $view->render('employees.avg_age');
+    }
     public function hello(): string
     {
        // var_dump(app()->auth::user()->roles); die();

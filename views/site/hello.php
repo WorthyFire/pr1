@@ -99,7 +99,10 @@ if (app()->auth::check()) {
         <div class="add-button-container">
             <a href="<?= app()->route->getUrl('/add_divisions') ?>" class="add-button">Добавить новое подразделение</a>
         </div>
-        <div class="add-button-container"><button class="add-button">Средний возраст сотрудников подразделения </button></div>
+        <div class="add-button-container">
+            <a href="<?= app()->route->getUrl('/avg_age') ?>" class="add-button">Средний возраст сотрудников подразделений</a>
+        </div>
+    <br>
     <br>
         <input type="text" placeholder="Поиск сотрудников" >
     <?php endif; ?>

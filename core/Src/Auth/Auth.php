@@ -3,14 +3,15 @@
 namespace Src\Auth;
 
 use Src\Session;
+use Model\User;
 
 class Auth
 {
-    //Свойство для хранения любого класса, реализующего интерфейс IdentityInterface
-    private static IdentityInterface $user;
+    //Свойство для хранения текущего пользователя
+    private static ?User $user = null;
 
-    //Инициализация класса пользователя
-    public static function init(IdentityInterface $user): void
+    //Инициализация текущего пользователя
+    public static function init(User $user): void
     {
         self::$user = $user;
         if (self::user()) {
@@ -18,8 +19,8 @@ class Auth
         }
     }
 
-    //Вход пользователя по модели
-    public static function login(IdentityInterface $user): void
+    //Вход пользователя
+    public static function login(User $user): void
     {
         self::$user = $user;
         Session::set('id', self::$user->getId());
@@ -28,7 +29,8 @@ class Auth
     //Аутентификация пользователя и вход по учетным данным
     public static function attempt(array $credentials): bool
     {
-        if ($user = self::$user->attemptIdentity($credentials)) {
+        $user = User::where('login', $credentials['login'])->first();
+        if ($user && md5($credentials['password']) === $user->password) {
             self::login($user);
             return true;
         }
@@ -36,27 +38,29 @@ class Auth
     }
 
     //Возврат текущего аутентифицированного пользователя
-    public static function user()
+    public static function user(): ?User
     {
-        $id = Session::get('id') ?? 0;
-        return self::$user->findIdentity($id);
+        $id = Session::get('id');
+        return $id ? User::find($id) : null;
     }
 
     //Проверка является ли текущий пользователь аутентифицированным
     public static function check(): bool
     {
-        if (self::user()) {
-            return true;
-        }
-        return false;
+        return self::user() !== null;
+    }
+
+    //Проверка роли пользователя
+    public static function checkRole(string $roleName): bool
+    {
+        $user = self::user();
+        return $user && $user->roles()->where('Name', $roleName)->exists();
     }
 
     //Выход текущего пользователя
-    public static function logout(): bool
+    public static function logout(): void
     {
         Session::clear('id');
-        return true;
+        self::$user = null;
     }
-
-
 }

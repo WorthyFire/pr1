@@ -7,5 +7,7 @@ return [
     //Классы для middleware
     'routeMiddleware' => [
         'auth' => \Middlewares\AuthMiddleware::class,
+        'admin' => \Middlewares\RoleAdminMiddleware::class,
+        'employees'=> \Middlewares\RoleEmployeesMiddleware::class
     ]
 ];

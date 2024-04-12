@@ -30,7 +30,8 @@ class Auth
     public static function attempt(array $credentials): bool
     {
         $user = User::where('login', $credentials['login'])->first();
-        if ($user && md5($credentials['password']) === $user->password) {
+        //var_dump($user->Password, md5($credentials['password']));
+        if ($user && md5($credentials['password']) === $user->Password) {
             self::login($user);
             return true;
         }

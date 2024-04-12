@@ -42,6 +42,7 @@ class Site
             return new View('site.login');
         }
         //Если удалось аутентифицировать пользователя, то редирект
+       // var_dump($request->all());
         if (Auth::attempt($request->all())) {
             app()->route->redirect('/hello');
         }

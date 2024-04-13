@@ -52,7 +52,8 @@
     <?php if (!empty($message)): ?>
         <p style="color: red;"><?= $message ?></p>
     <?php endif; ?>
-    <form method="post" action="/login">
+    <form method="post">
+        <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
         <input type="text" id="login" name="login" placeholder="Логин" required>
         <input type="password" id="password" name="password" placeholder="Пароль" required>
         <button type="submit">Войти</button>

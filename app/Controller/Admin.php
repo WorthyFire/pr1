@@ -6,28 +6,45 @@ use Src\View;
 use Src\Request;
 use Model\User;
 use Model\Role;
+use Src\Validator\Validator;
 
 class Admin
 {
     public function addEmployees(Request $request): string
     {
-        // Проверяем, были ли данные отправлены методом POST
         if ($request->method === 'POST') {
-            // Получаем все данные запроса
+
+            // Получаем все данные из запроса
             $requestData = $request->all();
 
-            // Проверяем, существует ли уже пользователь с таким логином
-            $existingUser = User::where('login', $requestData['login'])->first();
-
-            // Если пользователь уже существует и он является сотрудником отдела кадров, выводим сообщение об ошибке
-            if ($existingUser && $existingUser->hasRole('Сотрудник отдела кадров')) {
-                return new View('error', ['message' => 'Сотрудник с таким логином уже существует']);
+            // Проверяем, что поля не пустые
+            if (empty($requestData['login']) || empty($requestData['password'])) {
+                return new View('admin.add_employees', ['message' => 'Логин и пароль обязательны для заполнения']);
             }
 
-            // Если пользователя с таким логином еще нет, создаем нового
+            // Проверяем, существует ли пользователь с таким логином
+            $existingUser = User::where('login', $requestData['login'])->first();
+            if ($existingUser) {
+                return new View('admin.add_employees', ['message' => 'Пользователь с таким логином уже существует']);
+            }
+
+            // Валидация входных данных
+            $validator = new Validator($requestData, [
+                'login' => ['required'],
+                'password' => ['required']
+            ], [
+                'required' => 'Поле :field обязательно для заполнения'
+            ]);
+
+            // Проверка на ошибки валидации
+            if($validator->fails()){
+                return new View('admin.add_employees', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            // Создание нового пользователя
             $user = User::create([
-                'login' => $requestData['login'], // Используем метод all() для получения данных
-                'password' => md5($requestData['password']), // Хэшируем пароль
+                'login' => $requestData['login'],
+                'password' => md5($requestData['password']),
             ]);
 
             // Проверяем, был ли пользователь успешно создан
@@ -46,6 +63,6 @@ class Admin
         }
 
         // Если что-то пошло не так или данные неверны, отображаем форму добавления сотрудника с сообщением об ошибке
-        return new View('admin.add_employees', ['message' => 'Неправильные данные']);
+        return new View('admin.add_employees', ['message' => '']);
     }
 }

@@ -6,8 +6,18 @@ return [
     'identity' => \Model\User::class,
     //Классы для middleware
     'routeMiddleware' => [
+        'csrf' => \Middlewares\CSRFMiddleware::class,
         'auth' => \Middlewares\AuthMiddleware::class,
         'admin' => \Middlewares\RoleAdminMiddleware::class,
         'employees'=> \Middlewares\RoleEmployeesMiddleware::class
+    ],
+    'routeAppMiddleware' => [
+      'trim' => \Middlewares\TrimMiddleware::class,
+      'specialChars' => \Middlewares\SpecialCharsMiddleware::class,
+    ],
+
+    'validator' => [
+        'required' => \Validators\RequireValidator::class,
+        'unique' => \Validators\UniqueValidator::class
     ]
-];
+ ];

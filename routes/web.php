@@ -8,7 +8,7 @@ use Src\Route;
 Route::add(['GET', 'POST'], '/login', [Controller\Site::class, 'login']);
 Route::add('GET', '/hello', [Controller\Site::class, 'hello'])
     ->middleware('auth');
-Route::add('GET', '/addEmployees', [Controller\Admin::class, 'addEmployees'])
+Route::add(['GET', 'POST'], '/addEmployees', [Controller\Admin::class, 'addEmployees'])
     ->middleware('auth','admin');
 Route::add('GET', '/avg_age', [Controller\Site::class, 'avg_age'])
     ->middleware('auth', 'employees');

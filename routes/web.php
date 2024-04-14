@@ -14,7 +14,7 @@ Route::add('GET', '/avg_age', [Controller\Site::class, 'avg_age'])
     ->middleware('auth', 'employees');
 Route::add('GET', '/add_worker', [Controller\Site::class, 'add_worker'])
     ->middleware('auth', 'employees');
-Route::add('GET', '/add_divisions', [Controller\Site::class, 'add_divisions'])
+Route::add(['GET', 'POST'], '/add_divisions', [Controller\Site::class, 'add_divisions'])
     ->middleware('auth', 'employees');
 Route::add('GET', '/logout', [Controller\Site::class, 'logout'])
     ->middleware('auth');

@@ -43,8 +43,9 @@
 <body>
 <div class="container">
     <h2>Добавление нового подразделения</h2>
-    <form>
+    <form method="post">
         <input type="text" id="department-name" name="department-name" placeholder="Наименование подразделения" required>
+        <input type="text" id="department-type" name="department-type" placeholder="Тип подразделения" required>
         <button>Добавить подразделение</button>
     </form>
 </div>

@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Model\Department;
 use Model\Post;
 use Src\View;
 use Src\Request;
@@ -10,21 +11,37 @@ use Src\Auth\Auth;
 
 class Site
 {
-    public function index(): string
-    {
-        $view = new View();
-        return $view->render('site.hello', ['message' => 'index working']);
-    }
+
     public function add_worker(): string
     {
         $view = new View();
         return $view->render('employees.add_worker');
     }
-    public function add_divisions(): string
+    public function add_divisions(Request $request)
     {
-        $view = new View();
-        return $view->render('employees.add_divisions');
+        // Если метод запроса - POST, значит, пользователь отправил форму с данными
+        if ($request->method === 'POST') {
+            // Получаем данные из запроса
+            $name = $request->get('department-name');
+            $type = $request->get('department-type');
+
+            // Создаем новый экземпляр модели подразделения
+            $department = new Department();
+            $department->name = $name;
+            $department->type = $type;
+
+            // Сохраняем данные в базе данных
+            $department->save();
+
+            // После сохранения перенаправляем пользователя на страницу hello
+            app()->route->redirect('/hello');
+        } else {
+            // Если метод запроса не POST, просто отображаем форму для добавления подразделения
+            $view = new View();
+            return $view->render('employees.add_divisions');
+        }
     }
+
     public function avg_age(): string
     {
         $view = new View();

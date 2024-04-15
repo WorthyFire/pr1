@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Model\Department;
+use Model\Employee;
 use Model\Position;
 use Model\Post;
 use Src\View;
@@ -93,7 +94,15 @@ class Site
     }
     public function hello(): string
     {
-        // var_dump(app()->auth::user()->roles); die();
+        //$position = Position::get()->first();
+        //$employee = Employee::find(60);
+        //Employee::all()[0]->positions()->attach($position);
+        //var_dump($employee->positions);
+
+        //$employee->positions()->attach($position);
+
+         //var_dump($employee->positions[0]); die();
+
         return new View('site.hello', ['message' => 'hello working']);
     }
     public function login(Request $request): string

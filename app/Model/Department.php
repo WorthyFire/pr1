@@ -12,7 +12,7 @@ class Department extends Model
 
     protected $fillable = ['Name', 'Type']; // Указываем поля, доступные для массового заполнения
 
-    public $timestamps = false; // Отключаем использование меток времени created_at и updated_at
+    public $timestamps = false;
 
-    // Другие связи, методы и функции могут быть добавлены здесь
+
 }

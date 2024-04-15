@@ -65,20 +65,62 @@
         .add-button:hover{
             background-color: blue;
         }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .filter-select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .filter-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .filter-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 <?php
-// Проверяем, авторизован ли пользователь
-if (app()->auth::check()) {
-    // Получаем текущего пользователя
-    $user = app()->auth::user();
+use Model\Department;
+use Model\Position;
 
-    // Получаем роль пользователя
+if (app()->auth::check()) {
+    $user = app()->auth::user();
     $role = $user->roles->isNotEmpty() ? $user->roles[0]->Name : 'Неизвестно';
 } else {
     $role = 'Неизвестно';
 }
+
+// Получаем все подразделения
+$departments = Department::all();
+
 ?>
 <div class="header">
     <div class="roles">Роль: <?php echo $role; ?></div>
@@ -93,6 +135,12 @@ if (app()->auth::check()) {
     <?php endif; ?>
 
     <?php if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')): ?>
+        <form class="search-form" method="GET" action="<?= app()->route->getUrl('/hello') ?>">
+            <input class="search-input" type="text" name="search_lastname" placeholder="Введите фамилию">
+            <input class="search-input" type="text" name="search_firstname" placeholder="Введите имя">
+            <button class="search-button" type="submit">Поиск</button>
+        </form>
+
         <div class="add-button-container">
             <a href="<?= app()->route->getUrl('/add_worker') ?>" class="add-button">Добавить нового сотрудника</a>
         </div>
@@ -102,11 +150,10 @@ if (app()->auth::check()) {
         <div class="add-button-container">
             <a href="<?= app()->route->getUrl('/avg_age') ?>" class="add-button">Средний возраст сотрудников подразделений</a>
         </div>
-    <br>
-    <br>
-
+        <br>
+        <br>
     <?php endif; ?>
-
+    <!-- Отдел кадров: Список сотрудников -->
     <h2>Отдел кадров: Список сотрудников</h2>
     <table>
         <tr>
@@ -120,9 +167,54 @@ if (app()->auth::check()) {
             <th>Должность</th>
             <th>Подразделение</th>
         </tr>
+        <?php
+        use Model\Employee;
+
+        // Получаем всех сотрудников
+        $employees = Employee::query();
+
+
+        // Поиск по фамилии и имени
+        if (isset($_GET['search_lastname']) && isset($_GET['search_firstname'])) {
+            // Получаем значения фамилии и имени из формы поиска
+            $search_lastname = $_GET['search_lastname'];
+            $search_firstname = $_GET['search_firstname'];
+
+            $employees = $employees->where('Surname', 'like', "%$search_lastname%")
+                ->where('FirstName', 'like', "%$search_firstname%");
+        }
+
+        $employees = $employees->get();
+
+        // Проверяем, есть ли сотрудники в базе данных
+        if ($employees->isEmpty()) {
+            echo "<tr><td colspan='9'>Нет сотрудников для отображения.</td></tr>";
+        } else {
+            // Выводим список сотрудников
+            foreach ($employees as $employee) {
+                // Получаем первую должность сотрудника
+                $position = $employee->positions()->first();
+                $positionName = $position ? $position->Name : 'Не указана';
+
+                // Получаем первое подразделение сотрудника
+                $department = $employee->departments()->first();
+                $departmentName = $department ? $department->Name : 'Не указано';
+
+                echo "<tr>
+                        <td>{$employee->EmployeeID}</td>
+                        <td>{$employee->Surname}</td>
+                        <td>{$employee->FirstName}</td>
+                        <td>{$employee->Patronymic}</td>
+                        <td>{$employee->Gender}</td>
+                        <td>{$employee->BirthDate}</td>
+                        <td>{$employee->Address}</td>
+                        <td>{$positionName}</td>
+                        <td>{$departmentName}</td>
+                    </tr>";
+            }
+        }
+        ?>
     </table>
 </div>
-
-
 </body>
 </html>

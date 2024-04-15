@@ -49,8 +49,8 @@
             <option value="M">Мужской</option>
             <option value="F">Женский</option>
         </select>
-        <input type="date" id="birth-date" name="birth-date" placeholder="Дата рождения">
-        <input type="text" id="address" name="address" placeholder="Адрес прописки">
+        <input type="date" id="birth-date" name="birth-date" placeholder="Дата рождения" required>
+        <input type="text" id="address" name="address" placeholder="Адрес прописки" required>
         <select id="department" name="department" placeholder="Подразделение (не обязательно)">
             <option value="">Выберите подразделение</option>
             <?php foreach ($departments as $department): ?>

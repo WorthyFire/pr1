@@ -43,6 +43,14 @@
 <body>
 <div class="container">
     <h2>Добавление нового подразделения</h2>
+    <!-- Проверяем, существует ли массив $errors и не пуст ли он -->
+    <?php if (isset($errors) && !empty($errors)) : ?>
+        <div style="color: red;">
+            <?php foreach ($errors as $error) : ?>
+                <?= $error; ?><br>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
     <form method="post">
         <input type="text" id="department-name" name="department-name" placeholder="Наименование подразделения" required>
         <input type="text" id="department-type" name="department-type" placeholder="Тип подразделения" required>

@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Model\Department;
+use Model\Position;
 use Model\Post;
 use Src\View;
 use Src\Request;
@@ -12,11 +13,54 @@ use Src\Auth\Auth;
 class Site
 {
 
-    public function add_worker(): string
+    public function add_worker(Request $request)
     {
-        $view = new View();
-        return $view->render('employees.add_worker');
+        // Получение всех должностей из базы данных
+        $positions = Position::all();
+
+        // Получение всех подразделений из базы данных
+        $departments = Department::all();
+
+        if ($request->method === 'POST') {
+            $surname = $request->get('surname');
+            $name = $request->get('name');
+            $patronymic = $request->get('patronymic');
+            $gender = $request->get('gender');
+            $birthDate = $request->get('birth-date');
+            $address = $request->get('address');
+            $position = Position::find($request->get('position'));
+            $department = Department::find($request->get('department'));
+           // var_dump($request->all());die();
+            // Создаем новый экземпляр сотрудника
+            $employee = new \Model\Employee();
+            $employee->Surname = $surname;
+            $employee->FirstName = $name;
+            $employee->Patronymic = $patronymic;
+            $employee->Gender = $gender; // Заполняем поле Gender
+            $employee->BirthDate = $birthDate;
+            $employee->Address = $address;
+            $employee->save();
+
+            // Связываем сотрудника с должностью, если указана
+            if ($position) {
+                $employee->positions()->attach($position);
+            }
+
+            // Связываем сотрудника с подразделением, если указано
+            if ($department) {
+                $employee->departments()->attach($department);
+            }
+
+            // После сохранения перенаправляем пользователя на страницу приветствия
+            app()->route->redirect('/hello');
+        } else {
+            // Если метод запроса не POST, просто отображаем форму для добавления сотрудника
+            $view = new View();
+            return $view->render('employees.add_worker', ['positions' => $positions, 'departments' => $departments]);
+        }
     }
+
+
     public function add_divisions(Request $request)
     {
         // Если метод запроса - POST, значит, пользователь отправил форму с данными
@@ -49,7 +93,7 @@ class Site
     }
     public function hello(): string
     {
-       // var_dump(app()->auth::user()->roles); die();
+        // var_dump(app()->auth::user()->roles); die();
         return new View('site.hello', ['message' => 'hello working']);
     }
     public function login(Request $request): string
@@ -59,7 +103,7 @@ class Site
             return new View('site.login');
         }
         //Если удалось аутентифицировать пользователя, то редирект
-       // var_dump($request->all());
+        // var_dump($request->all());
         if (Auth::attempt($request->all())) {
             app()->route->redirect('/hello');
         }
@@ -72,8 +116,4 @@ class Site
         Auth::logout();
         app()->route->redirect('/login');
     }
-
-
-
-
 }

@@ -41,18 +41,30 @@
 <body>
 <div class="container">
     <h2>Добавление нового сотрудника</h2>
-    <form>
+    <form method="post">
         <input type="text" id="surname" name="surname" placeholder="Фамилия" required>
         <input type="text" id="name" name="name" placeholder="Имя" required>
         <input type="text" id="patronymic" name="patronymic" placeholder="Отчество">
         <select id="gender" name="gender">
-            <option value="male">Мужской</option>
-            <option value="female">Женский</option>
+            <option value="M">Мужской</option>
+            <option value="F">Женский</option>
         </select>
         <input type="date" id="birth-date" name="birth-date" placeholder="Дата рождения">
         <input type="text" id="address" name="address" placeholder="Адрес прописки">
-        <input type="text" id="position" name="position" placeholder="Должность (не обязательно)">
-        <input type="text" id="department" name="department" placeholder="Подразделение (не обязательно)">
+        <select id="department" name="department" placeholder="Подразделение (не обязательно)">
+            <option value="">Выберите подразделение</option>
+            <?php foreach ($departments as $department): ?>
+                <option value="<?php echo $department->DepartmentID; ?>"><?php echo $department->Name; ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <select id="position" name="position" placeholder="Должность (не обязательно)">
+            <option value="">Выберите должность</option>
+            <?php foreach ($positions as $position): ?>
+                <option value="<?php echo $position->PositionID; ?>"><?php echo $position->Name; ?></option>
+            <?php endforeach; ?>
+        </select>
+
         <button>Добавить</button>
     </form>
 </div>

@@ -8,11 +8,11 @@ class Department extends Model
 {
     protected $table = 'departments'; // Указываем имя таблицы в базе данных
 
-    // Определяем, какие атрибуты можно массово присваивать
-    protected $fillable = ['name', 'type'];
-    public $timestamps = false;
+    protected $primaryKey = 'DepartmentID'; // Указываем первичный ключ
 
+    protected $fillable = ['Name', 'Type']; // Указываем поля, доступные для массового заполнения
 
+    public $timestamps = false; // Отключаем использование меток времени created_at и updated_at
 
-    // Дополнительные методы и свойства класса, если необходимо
+    // Другие связи, методы и функции могут быть добавлены здесь
 }

@@ -104,7 +104,7 @@ if (app()->auth::check()) {
         </div>
     <br>
     <br>
-        <input type="text" placeholder="Поиск сотрудников" >
+
     <?php endif; ?>
 
     <h2>Отдел кадров: Список сотрудников</h2>

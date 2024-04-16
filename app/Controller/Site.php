@@ -92,20 +92,11 @@ class Site
     }
     public function hello(Request $request): string
     {
-       // var_dump($request->all());die();
-        //$position = Position::get()->first();
-        //$employee = Employee::find(60);
-        //Employee::all()[0]->positions()->attach($position);
-        //var_dump($employee->positions);
-
-        //$employee->positions()->attach($position);
-
-         //var_dump($employee->positions[0]); die();
-
         $departments = Department::all();
-
-        return new View('site.hello', ['departments' => $departments]);
+        $view = new View();
+        return $view->render('site.hello', ['departments' => $departments]);
     }
+
     public function login(Request $request): string
     {
         //Если просто обращение к странице, то отобразить форму

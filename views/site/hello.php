@@ -182,7 +182,7 @@ if (app()->auth::check()) {
             <th>Должность</th>
             <th>Подразделение</th>
             <?php if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')): ?>
-                <th>Действия</th> <!-- Новый заголовок для столбца с кнопкой "Редактировать" -->
+                <th>Действия</th>
             <?php endif; ?>
         </tr>
         <?php
@@ -201,13 +201,13 @@ if (app()->auth::check()) {
 
 
         // Фильтрация по подразделению
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST['department'])) {
-                $departmentId = $_POST['department'];
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            if (isset($_GET['department'])) {
+                $departmentId = $_GET['department'];
 
                 if ($departmentId) {
                     $employees = $employees->whereHas('departments', function ($query) use ($departmentId) {
-                        $query->where('id', $departmentId);
+                        $query->where('departments.DepartmentID', $departmentId);
                     });
                 }
             }

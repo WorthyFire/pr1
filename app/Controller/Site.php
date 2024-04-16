@@ -21,6 +21,7 @@ class Site
         $departments = Department::all();
 
         if ($request->method === 'POST') {
+            // Получение данных из запроса
             $surname = $request->get('surname');
             $name = $request->get('name');
             $patronymic = $request->get('patronymic');
@@ -29,26 +30,45 @@ class Site
             $address = $request->get('address');
             $position = Position::find($request->get('position'));
             $department = Department::find($request->get('department'));
-           // var_dump($request->all());die();
-            // Создаем новый экземпляр сотрудника
-            $employee = new \Model\Employee();
-            $employee->Surname = $surname;
-            $employee->FirstName = $name;
-            $employee->Patronymic = $patronymic;
-            $employee->Gender = $gender; // Заполняем поле Gender
-            $employee->BirthDate = $birthDate;
-            $employee->Address = $address;
-            $employee->save();
 
-            // Связываем сотрудника с должностью, если указана
-            if ($position) {
-                $employee->positions()->attach($position);
+            // Создаем новые экземпляры валидаторов для каждого поля
+            $surnameValidator = new \Validators\CyrillicValidator('surname', $surname);
+            $nameValidator = new \Validators\CyrillicValidator('name', $name);
+            $patronymicValidator = new \Validators\CyrillicValidator('patronymic', $patronymic);
+            $addressValidator = new \Validators\CyrillicValidator('address', $address);
+
+            // Выполняем валидацию каждого поля
+            $surnameValidation = $surnameValidator->validate();
+            $nameValidation = $nameValidator->validate();
+            $patronymicValidation = $patronymicValidator->validate();
+            $addressValidation = $addressValidator->validate();
+
+            // Проверяем результаты валидации
+            $errors = [];
+            if ($surnameValidation !== true) {
+                $errors['surname'] = $surnameValidation;
+            }
+            if ($nameValidation !== true) {
+                $errors['name'] = $nameValidation;
+            }
+            if ($patronymicValidation !== true) {
+                $errors['patronymic'] = $patronymicValidation;
+            }
+            if ($addressValidation !== true) {
+                $errors['address'] = $addressValidation;
             }
 
-            // Связываем сотрудника с подразделением, если указано
-            if ($department) {
-                $employee->departments()->attach($department);
+            // Если есть ошибки валидации, возвращаем форму с ошибками
+            if (!empty($errors)) {
+                $view = new View();
+                return $view->render('employees.add_worker', [
+                    'positions' => $positions,
+                    'departments' => $departments,
+                    'errors' => $errors
+                ]);
             }
+
+            // Ваш текущий код обработки POST-запроса
 
             // После сохранения перенаправляем пользователя на страницу приветствия
             app()->route->redirect('/hello');
@@ -68,6 +88,17 @@ class Site
             $name = $request->get('department-name');
             $type = $request->get('department-type');
 
+            // Валидация данных
+            $validator = new \Validators\UniqueDivisionsValidator('name', $name);
+            $validator->validate();
+
+            // Проверяем, прошла ли валидация
+            if ($validator->fails()) {
+                // Если валидация не прошла, выводим ошибку пользователю
+                $view = new View();
+                return $view->render('employees.add_divisions', ['errors' => $validator->errors()]);
+            }
+
             // Создаем новый экземпляр модели подразделения
             $department = new Department();
             $department->name = $name;
@@ -84,6 +115,9 @@ class Site
             return $view->render('employees.add_divisions');
         }
     }
+
+
+
 
     public function avg_age(): string
     {

@@ -18,6 +18,8 @@ return [
 
     'validator' => [
         'required' => \Validators\RequireValidator::class,
-        'unique' => \Validators\UniqueValidator::class
-    ]
+        'unique' => \Validators\UniqueValidator::class,
+        'uniqueDivisions' => \Validators\UniqueDivisionsValidator::class,
+        'cyrillic'=>\Validators\CyrillicValidator::class,
+        ]
  ];

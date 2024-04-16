@@ -7,7 +7,7 @@ use Src\Validator\AbstractValidator;
 
 class CyrillicValidator extends AbstractValidator
 {
-    protected string $message = 'Field :field must contain only Cyrillic letters';
+    protected string $message = 'Поле :field должно быть заполнено только на Русском языке';
 
     public function rule(): bool
     {

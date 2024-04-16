@@ -88,17 +88,6 @@ class Site
             $name = $request->get('department-name');
             $type = $request->get('department-type');
 
-            // Валидация данных
-            $validator = new \Validators\UniqueDivisionsValidator('name', $name);
-            $validator->validate();
-
-            // Проверяем, прошла ли валидация
-            if ($validator->fails()) {
-                // Если валидация не прошла, выводим ошибку пользователю
-                $view = new View();
-                return $view->render('employees.add_divisions', ['errors' => $validator->errors()]);
-            }
-
             // Создаем новый экземпляр модели подразделения
             $department = new Department();
             $department->name = $name;
@@ -115,9 +104,6 @@ class Site
             return $view->render('employees.add_divisions');
         }
     }
-
-
-
 
     public function avg_age(): string
     {

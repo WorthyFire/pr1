@@ -2,7 +2,6 @@
 
 namespace Validators;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Src\Validator\AbstractValidator;
 use Model\Department;
 
@@ -20,10 +19,4 @@ class UniqueDivisionsValidator extends AbstractValidator
         // Возвращаем результат валидации (true - если подразделение уникально, false - если уже существует)
         return !$existingDepartment;
     }
-    public function fails(): bool
-    {
-        return !empty($this->errors);
-    }
-
-
 }

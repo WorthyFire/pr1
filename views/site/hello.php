@@ -85,13 +85,14 @@
         .search-button:hover {
             background-color: #0056b3;
         }
-        .filter-container {
+        .filter-form {
             margin-bottom: 20px;
         }
         .filter-select {
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            margin-right: 10px;
         }
         .filter-button {
             padding: 10px 20px;
@@ -109,7 +110,7 @@
 <body>
 <?php
 use Model\Department;
-use Model\Position;
+use Model\Employee;
 
 if (app()->auth::check()) {
     $user = app()->auth::user();
@@ -119,7 +120,7 @@ if (app()->auth::check()) {
 }
 
 // Получаем все подразделения
-$departments = Department::all();
+
 
 ?>
 <div class="header">
@@ -141,12 +142,26 @@ $departments = Department::all();
             <button class="search-button" type="submit">Поиск</button>
         </form>
 
+        <form class="filter-form" method="get">
+            <label for="department">Подразделение:</label>
+            <select class="filter-select" name="department" id="department">
+                <option value="">Выберите подразделение</option>
+                <?php foreach ($departments as $department): ?>
+                    <option value="<?= $department->DepartmentID ?>"><?= $department->Name ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button class="filter-button" type="submit">Применить</button>
+        </form>
+
+        <!-- Выводите здесь таблицу с сотрудниками, которые прошли через фильтр -->
+
         <div class="add-button-container">
             <a href="<?= app()->route->getUrl('/add_worker') ?>" class="add-button">Добавить нового сотрудника</a>
         </div>
         <div class="add-button-container">
             <a href="<?= app()->route->getUrl('/add_divisions') ?>" class="add-button">Добавить новое подразделение</a>
         </div>
+
         <div class="add-button-container">
             <a href="<?= app()->route->getUrl('/avg_age') ?>" class="add-button">Средний возраст сотрудников подразделений</a>
         </div>
@@ -166,13 +181,13 @@ $departments = Department::all();
             <th>Адрес прописки</th>
             <th>Должность</th>
             <th>Подразделение</th>
+            <?php if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')): ?>
+                <th>Действия</th> <!-- Новый заголовок для столбца с кнопкой "Редактировать" -->
+            <?php endif; ?>
         </tr>
         <?php
-        use Model\Employee;
-
         // Получаем всех сотрудников
         $employees = Employee::query();
-
 
         // Поиск по фамилии и имени
         if (isset($_GET['search_lastname']) && isset($_GET['search_firstname'])) {
@@ -184,11 +199,25 @@ $departments = Department::all();
                 ->where('FirstName', 'like', "%$search_firstname%");
         }
 
+
+        // Фильтрация по подразделению
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST['department'])) {
+                $departmentId = $_POST['department'];
+
+                if ($departmentId) {
+                    $employees = $employees->whereHas('departments', function ($query) use ($departmentId) {
+                        $query->where('id', $departmentId);
+                    });
+                }
+            }
+        }
+
         $employees = $employees->get();
 
         // Проверяем, есть ли сотрудники в базе данных
         if ($employees->isEmpty()) {
-            echo "<tr><td colspan='9'>Нет сотрудников для отображения.</td></tr>";
+            echo "<tr><td colspan='10'>Нет сотрудников для отображения.</td></tr>";
         } else {
             // Выводим список сотрудников
             foreach ($employees as $employee) {
@@ -209,8 +238,11 @@ $departments = Department::all();
                         <td>{$employee->BirthDate}</td>
                         <td>{$employee->Address}</td>
                         <td>{$positionName}</td>
-                        <td>{$departmentName}</td>
-                    </tr>";
+                        <td>{$departmentName}</td>";
+                if (app()->auth::check() && app()->auth::user()->roles->contains('Name', 'Сотрудник отдела кадров')) {
+                    echo "<td><a href=\"edit_employee.php?employee_id={$employee->EmployeeID}\">Редактировать</a></td>";
+                }
+                echo "</tr>";
             }
         }
         ?>

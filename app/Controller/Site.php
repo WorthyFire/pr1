@@ -3,12 +3,10 @@
 namespace Controller;
 
 use Model\Department;
-use Model\Employee;
 use Model\Position;
 use Model\Post;
 use Src\View;
 use Src\Request;
-use Model\User;
 use Src\Auth\Auth;
 
 class Site
@@ -92,8 +90,9 @@ class Site
         $view = new View();
         return $view->render('employees.avg_age');
     }
-    public function hello(): string
+    public function hello(Request $request): string
     {
+       // var_dump($request->all());die();
         //$position = Position::get()->first();
         //$employee = Employee::find(60);
         //Employee::all()[0]->positions()->attach($position);
@@ -103,7 +102,9 @@ class Site
 
          //var_dump($employee->positions[0]); die();
 
-        return new View('site.hello', ['message' => 'hello working']);
+        $departments = Department::all();
+
+        return new View('site.hello', ['departments' => $departments]);
     }
     public function login(Request $request): string
     {
@@ -125,4 +126,11 @@ class Site
         Auth::logout();
         app()->route->redirect('/login');
     }
+
+    public function edit_employee($request)
+    {
+        $view = new View();
+        return $view->render('employees.edit_employee');
+    }
+
 }

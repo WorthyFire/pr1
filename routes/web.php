@@ -14,6 +14,8 @@ Route::add(['GET', 'POST'], '/avg_age', [Controller\Site::class, 'avg_age'])
     ->middleware('auth', 'employees');
 Route::add(['GET', 'POST'], '/add_worker', [Controller\Site::class, 'add_worker'])
     ->middleware('auth', 'employees');
+Route::add(['GET', 'POST'], '/edit_employee.php', [Controller\Site::class, 'edit_employee'])
+    ->middleware('auth', 'employees');
 Route::add(['GET', 'POST'], '/add_divisions', [Controller\Site::class, 'add_divisions'])
     ->middleware('auth', 'employees');
 Route::add('GET', '/logout', [Controller\Site::class, 'logout'])

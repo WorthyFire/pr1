@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f192fe1556968bbc528abb1c6f1189d",
+    "content-hash": "962516f5b52f013344f62b969f781c42",
     "packages": [
         {
             "name": "brick/math",
@@ -1666,6 +1666,49 @@
                 }
             ],
             "time": "2022-03-08T17:03:00+00:00"
+        },
+        {
+            "name": "worthyfire/collect2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WorthyFire/collect2.git",
+                "reference": "fe0fcf1da78d96d7196bb73a8fe189d1fc3ea257"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WorthyFire/collect2/zipball/fe0fcf1da78d96d7196bb73a8fe189d1fc3ea257",
+                "reference": "fe0fcf1da78d96d7196bb73a8fe189d1fc3ea257",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "WorthyFire",
+                    "email": "worthyfire@vk.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/WorthyFire/collect2/issues",
+                "source": "https://github.com/WorthyFire/collect2/tree/master"
+            },
+            "time": "2024-04-17T08:29:22+00:00"
         }
     ],
     "packages-dev": [],
@@ -1673,7 +1716,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "illuminate/database": 20,
-        "illuminate/events": 20
+        "illuminate/events": 20,
+        "nikic/fast-route": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

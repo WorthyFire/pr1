@@ -68,7 +68,27 @@ class Site
                 ]);
             }
 
-            // Ваш текущий код обработки POST-запроса
+            // Создаем новый экземпляр модели сотрудника
+            $employee = new \Model\Employee();
+            $employee->Surname = $surname;
+            $employee->FirstName = $name;
+            $employee->Patronymic = $patronymic;
+            $employee->Gender = $gender;
+            $employee->BirthDate = $birthDate;
+            $employee->Address = $address;
+
+            // Сохраняем сотрудника в базе данных
+            $employee->save();
+
+            // Связываем сотрудника с выбранной должностью, если указана
+            if ($position) {
+                $employee->positions()->attach($position);
+            }
+
+            // Связываем сотрудника с выбранным подразделением, если указано
+            if ($department) {
+                $employee->departments()->attach($department);
+            }
 
             // После сохранения перенаправляем пользователя на страницу приветствия
             app()->route->redirect('/hello');
@@ -78,7 +98,6 @@ class Site
             return $view->render('employees.add_worker', ['positions' => $positions, 'departments' => $departments]);
         }
     }
-
 
     public function add_divisions(Request $request)
     {

@@ -15,4 +15,4 @@ class SpecialCharsMiddleware
 
         return $request;
     }
-}
+}//ВЫПОЛНЕННАЯ ИНТЕГРАЦИЯ

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "962516f5b52f013344f62b969f781c42",
+    "content-hash": "90e6c308da78b0d33aa4262070608a9b",
     "packages": [
         {
             "name": "brick/math",
@@ -226,6 +226,47 @@
                 }
             ],
             "time": "2024-02-18T21:47:00+00:00"
+        },
+        {
+            "name": "gr421nidan/collect",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gr421nidan/collect2.git",
+                "reference": "209945006c727cb87c006d6ae9bac1b9f5a4a019"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gr421nidan/collect2/zipball/209945006c727cb87c006d6ae9bac1b9f5a4a019",
+                "reference": "209945006c727cb87c006d6ae9bac1b9f5a4a019",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Collect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "gr421nidan",
+                    "email": "nikushkina.dasha@yandex.ru"
+                }
+            ],
+            "description": "Module for working with arrays",
+            "support": {
+                "issues": "https://github.com/gr421nidan/collect2/issues",
+                "source": "https://github.com/gr421nidan/collect2/tree/master"
+            },
+            "time": "2024-04-16T14:16:24+00:00"
         },
         {
             "name": "illuminate/bus",
@@ -1709,6 +1750,49 @@
                 "source": "https://github.com/WorthyFire/collect2/tree/master"
             },
             "time": "2024-04-17T08:29:22+00:00"
+        },
+        {
+            "name": "worthyfire/middlewares",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WorthyFire/middlewares.git",
+                "reference": "5d3747409f67486d9a53a267d0021047a3f9581f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WorthyFire/middlewares/zipball/5d3747409f67486d9a53a267d0021047a3f9581f",
+                "reference": "5d3747409f67486d9a53a267d0021047a3f9581f",
+                "shasum": ""
+            },
+            "require": {
+                "gr421nidan/collect": "dev-master",
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Src\\": "core/Src/",
+                    "Src\\Auth\\": "core/Src/Auth/",
+                    "Middlewares\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "WorthyFire",
+                    "email": "worthyfire@vk.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/WorthyFire/middlewares/issues",
+                "source": "https://github.com/WorthyFire/middlewares/tree/master"
+            },
+            "time": "2024-04-17T12:28:11+00:00"
         }
     ],
     "packages-dev": [],
@@ -1717,7 +1801,8 @@
     "stability-flags": {
         "illuminate/database": 20,
         "illuminate/events": 20,
-        "nikic/fast-route": 20
+        "nikic/fast-route": 20,
+        "worthyfire/collect2": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

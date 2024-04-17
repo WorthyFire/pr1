@@ -33,7 +33,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/translation" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/translation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/gr421nidan/collect" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/worthyfire/collect2" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/worthyfire/middlewares" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

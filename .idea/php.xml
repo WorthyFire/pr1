@@ -40,6 +40,8 @@
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
       <path value="$PROJECT_DIR$/vendor/nikic/fast-route" />
       <path value="$PROJECT_DIR$/vendor/worthyfire/collect2" />
+      <path value="$PROJECT_DIR$/vendor/gr421nidan/collect" />
+      <path value="$PROJECT_DIR$/vendor/worthyfire/middlewares" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />

@@ -14,7 +14,8 @@
     "illuminate/database": "^12.0@dev",
     "illuminate/events": "^12.0@dev",
     "nikic/fast-route": "^2.0@dev",
-    "worthyfire/collect2": "dev-master"
+    "worthyfire/collect2": "dev-master",
+    "worthyfire/middlewares": "dev-master"
   },
   "autoload": {
     "psr-4": {
